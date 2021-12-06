@@ -1,0 +1,26 @@
+GdW Projektbeschreibung - Wanderrouten
+
+
+Das Ziel unseres Projektes ist die Implementierung eines Services welcher es dem Nutzer ermöglicht Wanderrouten zu finden. 
+
+Dem Nutzer soll es hierbei ermöglicht werden, Wanderrouten in seiner Nähe auf einer Karte einzusehen. Basierend auf dem Standort werden so mögliche Wanderwege in der Nähe ermittelt werden. Nach Ermittlung der verfügbaren Wanderwege hat der Nutzer die Möglichkeit sich für einen oder mehrere Wanderwege zu entscheiden. Als Grundlage zur Ermittlung der optimalen Wanderroute, werden folgende Eigenschaften der Routen dem Nutzer zu Grunde liegen:
+
+Entfernung
+Wetter am Ort
+Beschaffenheit der Route (Höhenmeter etc.)
+Art der Route (Waldwege etc.)
+Durchschnittliche Wanderdauer 
+GPS
+
+Zur Ermittlung der Route kann der Nutzer einen Radius definieren in welchem der Service Wanderrouten ermitteln soll.
+Sollte der Nutzer dem Service die entsprechenden Berechtigungen zur Verfügung stellen, kann unter Verwendung der GPS Funktion des Handys ein Radius auf einer Karte erstellt werden, in welchem gesucht wird. Die verfügbaren Wanderrouten werden dann auf dieser Karte angezeigt und entsprechend der Nutzerpräferenzen sortiert in einer Liste Ausgegeben. 
+Sollte der Nutzer beispielsweise Wanderrouten mit Übernachtungsmöglichkeiten vorgeschlagen bekommen, werden diese entsprechend in der Liste priorisiert. 
+Als Alternative zur GPS-basierten Standortermittlung kann der User ebenfalls seinen Stand-, oder Heimatort in den Einstellungen des Finders eintragen.
+
+Für dies Realisierung des Services bieten sich folgende Schnittstellen an: 
+
+* Trackviewer-API
+OpenStreetMap
+
+## Trackviewer-API
+Die Wanterroutenfinder API.
