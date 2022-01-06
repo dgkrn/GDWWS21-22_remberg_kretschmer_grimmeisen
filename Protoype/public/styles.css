@@ -12,6 +12,9 @@
       text-decoration: none;
       color: #222;
     }
+      img{
+          position: absolute;
+      }
 
     /* nav & footer styles */
     nav{
@@ -107,4 +110,3 @@
       font-size: 1.2em;
       cursor: pointer;
     }
-    #map { height: 180px; }

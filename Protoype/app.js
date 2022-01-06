@@ -93,6 +93,10 @@ app.get('/map', (req, res) => {
     res.render('map', { title: 'The Map'});
 });
 
+app.get('/map2', (req, res) => {
+    res.render('map2', { title: 'The Map'});
+});
+
 // redirects
 app.get('/about-us', (req, res) => {
     res.redirect('/about');

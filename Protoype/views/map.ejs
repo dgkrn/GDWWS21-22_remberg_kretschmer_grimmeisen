@@ -1,35 +1,55 @@
 <html lang="en">
 <%- include("./partials/head.ejs") %>
 <head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+    <title>Mein eigener Trackviewer</title>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+ integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+ crossorigin=""/>
+ <style type="text/css">
+    #karte {height:500px}
+    #linkback {margin-top:4px; font-size:9pt;}
+    #hoehe {width:200px; border:solid black 1px; background-color:#dfdfdf;}
+    #hoehenprofil {float:left;}
+    #hoetabklein {font-size:11pt;}
+    .clearleft {clear:left;}
+   </style>
 </head>
 
 <body>
   <%- include("./partials/nav.ejs") %>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin="">
+</script>
+  <script type="text/javascript"
+src="https://code.jquery.com/jquery-3.5.1.min.js">
+</script>
+<script type="text/javascript"
+src="https://tvapi.gpswandern.de/v/5/">
+</script>
+<script type="text/javascript">
+  var Tv = new TrackViewer;
+  Tv.url = "http://helmutkarger.de/download/tvapi/beispiel.gpx";
+  Tv.mapDiv = "karte";
+  Tv.eleProfDiv = "hoehenprofil";
+  Tv.eleProfWidth = 600;
+  Tv.eleProfHeight = 170;
+  Tv.selectedMaps = ["OpenStreetMap.de","OpenStreetMap.fr OSM France"];
+  Tv.xxx = "yyy";
+  Tv.eleSmallTabDiv = "hoetabklein";
+  Tv.request();
+</script>
+<div id="karte"></div>
+<p id="linkback">Der Trackviewer wird bereitgestellt von
+  <a href="http://www.gpswandern.de">www.GpsWandern.de</a>.
+ </p>
+ <p>Höhenprofil:</p>
+<div id="hoehe">
+<div id="hoetabklein"></div>
+<div id="hoehenprofil"></div>
+<div class="clearleft"></div>
+</div>
 
-  <div class="Map Content">
-    <h2>The Map</h2>
-
-    <div id="map"></div>
-    <script>
-        var map = L.map('map').setView([0,0],3);
-
-        L.tileLayer('https://api.maptiler.com/maps/outdoor/{z}/{x}/{y}.png?key=9cv75Xq4Zfz28NHFMLQ4', {
-            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-        }).addTo(map);
-    </script>
-  </div>
-
-  <%- include("./partials/footer.ejs") %>
 </body>
-<style>
-    #map { 
-        height: 500;
-    }
-</style>
 </html>
