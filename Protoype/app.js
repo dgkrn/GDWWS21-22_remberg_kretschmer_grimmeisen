@@ -16,7 +16,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology:true })
 app.set('view engine', 'ejs');
 
 
-
 //middleware & static files
 /*
 app.use((req, res, next) => {
@@ -46,7 +45,14 @@ app.get('/add-blog', (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-})
+    });
+
+    app.get('/routs', (req, res) => {
+        res.sendFile('/public/route.gpx', { root: __dirname, 
+            headers:{
+                
+        } });
+    });
 
 app.get('/all-blogs', (req, res) => {
     Blog.find()
@@ -56,7 +62,7 @@ app.get('/all-blogs', (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-})
+});
 
 app.get('/single-blog', (req, res) => {
     Blog.findById('61d42634f200bca039a0e4b4')
@@ -66,7 +72,7 @@ app.get('/single-blog', (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-})
+});
 
 //routes
 app.get('/', (req, res) => {
