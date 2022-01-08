@@ -92,6 +92,7 @@ app.get('/about', (req, res) => {
 
 app.get('/map', (req, res) => {
     Blog.findById('61d964758dcce026552ae33c')
+    //Blog.findById('61d976ebd0d141c8c0ce02af')
         .then((result) => {
             res.render('map', { title: 'The Map', blog: result});
         })
