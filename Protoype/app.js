@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogRoutes = require('./routes/blogRoutes');
+const Blog = require('./models/blog');
 const { result } = require('lodash');
 
 // express app
@@ -47,12 +48,6 @@ app.get('/add-blog', (req, res) => {
         });
     });
 
-    app.get('/routs', (req, res) => {
-        res.sendFile('/public/route.gpx', { root: __dirname, 
-            headers:{
-                
-        } });
-    });
 
 app.get('/all-blogs', (req, res) => {
     Blog.find()
@@ -96,7 +91,15 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/map', (req, res) => {
-    res.render('map', { title: 'The Map'});
+    Blog.findById('61d964758dcce026552ae33c')
+        .then((result) => {
+            res.render('map', { title: 'The Map', blog: result});
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(404).render( '404', { title: 'Map not found' });
+        });
+    
 });
 
 app.get('/route', (req, res) => {

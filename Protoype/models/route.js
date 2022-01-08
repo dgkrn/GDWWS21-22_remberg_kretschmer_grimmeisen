@@ -6,8 +6,8 @@ const routeSchema = new Schema({
         type: String,
         required: true
     },
-    route: {
-        type: Object,
+    link: {
+        type: String,
         required: true
     },
     body: {
