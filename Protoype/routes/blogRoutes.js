@@ -27,14 +27,14 @@ router.post('/blogs', (req, res) => {
 });
 
 router.get('/route/create', (req, res) => {
-    res.render('create', { title: 'Create a new Blog'});
+    res.render('create', { title: 'Create a new Route'});
 });
 
 router.get('/blogs/:id', (req, res) => {
     const id = req.params.id;
     Blog.findById(id)
         .then((result) => {
-            res.render('details', {blog: result , title: 'Blog Details'});
+            res.render('map', {blog: result , title: result.title});
         })
         .catch((err) => {
             console.log(err);

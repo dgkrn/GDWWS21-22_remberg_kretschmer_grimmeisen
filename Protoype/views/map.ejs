@@ -18,7 +18,9 @@
 
 <body>
   <%- include("./partials/nav.ejs") %>
-  <p id="123" class="snippet"><%= blog.snippet %></p>
+  <h2><%= blog.title %>
+  </h2>
+  <a id="123" class="snippet"><%= blog.snippet %></a>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
   crossorigin="">
@@ -45,6 +47,10 @@ src="https://tvapi.gpswandern.de/v/5/">
 <p id="linkback">Der Trackviewer wird bereitgestellt von
   <a href="http://www.gpswandern.de">www.GpsWandern.de</a>.
  </p>
+ <a class="delete" data-doc="<%= blog._id %>">
+  <img src="/trashcan.svg" alt="delete icon">
+</a>
+ 
  <p>Höhenprofil:</p>
 <div id="hoehe">
 <div id="hoetabklein"></div>
@@ -52,5 +58,18 @@ src="https://tvapi.gpswandern.de/v/5/">
 <div class="clearleft"></div>
 </div>
 
+<script>
+  const trashcan = document.querySelector('a.delete');
+  trashcan.addEventListener('click', (e) => {
+    const endpoint = `/blogs/${trashcan.dataset.doc}`;
+    fetch(endpoint, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = data.redirect)
+    .catch(err => console.log(err));
+  });
+  
+</script>
 </body>
 </html>
