@@ -137,22 +137,19 @@ app.get('/route', (req, res) => {
     res.render('route', { title: 'Route'});
 });
 
-app.get('/comment', (req, res) => {
-    res.render('createComment', { title: 'Kommentar erstellen'});
-});
 
-app.get('/comment/:id', (req, res) => {
+app.get('/routes/:id/comment', (req, res) => {
     id= req.params.id;
     res.render('createComment', { title: 'Kommentar erstellen', id: id});
 });
 
-app.post('/comment/:id', (req, res) => { 
+app.post('/routes/:id/comment', (req, res) => { 
     const comment = new Comment(req.body);
     comment.id= req.params.id;
 
     comment.save()
         .then((result) => {
-            res.redirect('/blogs');
+            res.redirect('/routes');
         })
         .catch((err) => {
             console.log(err);
@@ -160,10 +157,11 @@ app.post('/comment/:id', (req, res) => {
 });
 
 
-app.get('/comments', (req, res) => {
+app.get('/comments/:id/json', (req, res) => {
+    const id = req.params.id;
     Comment.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('showComments', { title: 'All Comments', comments: result })
+            res.render('showComments', { title: 'All Comments', comments: result, map_id : id})
         })
         .catch((err) => {
             console.log(err);
@@ -175,6 +173,30 @@ app.get('/comments/:id', (req, res) => {
     Comment.find().sort({ createdAt: -1 })
         .then((result) => {
             res.render('showComments', { title: 'All Comments', comments: result, map_id : id})
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/routes/:id/comment/:comment_id', (req, res) => {
+    const id = req.params.id;
+    const comment_id = req.params.comment_id;
+    Comment.findById(comment_id)
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.delete('/routes/:id/comment/:comment_id', (req, res) => {
+    const id = req.params.id;
+    const comment_id = req.params.comment_id;
+    Comment.findByIdAndDelete(comment_id)
+        .then((result) => {
+            res.json({ redirect: '/routes' });
         })
         .catch((err) => {
             console.log(err);
