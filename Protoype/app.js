@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogRoutes = require('./routes/blogRoutes');
 const Blog = require('./models/blog');
+const Comment = require('./models/commentary');
 const { result } = require('lodash');
 
 // express app
@@ -81,7 +82,7 @@ app.get('/', (req, res) => {
       ];
     res.render('index', { title: 'Home', blogs});
     */
-   res.redirect('/blogs');
+   res.redirect('/routes');
 });
 
 app.get('/about', (req, res) => {
@@ -92,7 +93,6 @@ app.get('/about', (req, res) => {
 
 app.get('/map', (req, res) => {
     Blog.findById('61d964758dcce026552ae33c')
-    //Blog.findById('61d976ebd0d141c8c0ce02af')
         .then((result) => {
             res.render('map', { title: 'The Map', blog: result});
         })
@@ -107,7 +107,13 @@ app.get('/map/:id', (req, res) => {
     const id = req.params.id;
     Blog.findById(id)
         .then((result) => {
-            res.render('map', {blog: result , title: result.title});
+            Comment.find().sort({ createdAt: -1 })
+            .then((result2) => {
+                res.render('map', {blog: result , title: result.title, comments: result2});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -120,7 +126,7 @@ app.delete('/map/:id', (req, res) => {
 
     Blog.findByIdAndDelete(id)
         .then((result) => {
-            res.json({ redirect: '/blogs' });
+            res.json({ redirect: '/blogs'});
          })
         .catch((err) => {
             console.log(err);
@@ -129,6 +135,50 @@ app.delete('/map/:id', (req, res) => {
 
 app.get('/route', (req, res) => {
     res.render('route', { title: 'Route'});
+});
+
+app.get('/comment', (req, res) => {
+    res.render('createComment', { title: 'Kommentar erstellen'});
+});
+
+app.get('/comment/:id', (req, res) => {
+    id= req.params.id;
+    res.render('createComment', { title: 'Kommentar erstellen', id: id});
+});
+
+app.post('/comment/:id', (req, res) => { 
+    const comment = new Comment(req.body);
+    comment.id= req.params.id;
+
+    comment.save()
+        .then((result) => {
+            res.redirect('/blogs');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+
+app.get('/comments', (req, res) => {
+    Comment.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('showComments', { title: 'All Comments', comments: result })
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/comments/:id', (req, res) => {
+    const id = req.params.id;
+    Comment.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('showComments', { title: 'All Comments', comments: result, map_id : id})
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 // redirects

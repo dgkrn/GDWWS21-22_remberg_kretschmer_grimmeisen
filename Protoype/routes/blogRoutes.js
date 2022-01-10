@@ -3,10 +3,10 @@ const Blog = require('../models/blog');
 
 const router = express.Router();
 
-router.get('/blogs', (req, res) => {
+router.get('/routes', (req, res) => {
     Blog.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('index', { title: 'All Blogs', blogs: result })
+            res.render('index', { title: 'All Routes', blogs: result })
         })
         .catch((err) => {
             console.log(err);
@@ -14,12 +14,12 @@ router.get('/blogs', (req, res) => {
 });
 
 
-router.post('/blogs', (req, res) => { 
+router.post('/routes', (req, res) => { 
     const blog = new Blog(req.body);
 
     blog.save()
         .then((result) => {
-            res.redirect('/blogs');
+            res.redirect('/routes');
         })
         .catch((err) => {
             console.log(err);
@@ -30,7 +30,19 @@ router.get('/route/create', (req, res) => {
     res.render('create', { title: 'Create a new Route'});
 });
 
-router.get('/blogs/:id', (req, res) => {
+router.get('/routes/:id/map', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+        .then((result) => {
+            res.redirect(result.snippet)
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(404).render( '404', { title: 'Route not found' });
+        });
+});
+
+router.get('/routes/:id', (req, res) => {
     const id = req.params.id;
     Blog.findById(id)
         .then((result) => {
@@ -38,17 +50,17 @@ router.get('/blogs/:id', (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(404).render( '404', { title: 'Blog not found' });
+            res.status(404).render( '404', { title: 'Route not found' });
         });
 });
 
 
-router.delete('/blogs/:id', (req, res) => {
+router.delete('/routes/:id', (req, res) => {
     const id = req.params.id;
 
     Blog.findByIdAndDelete(id)
         .then((result) => {
-            res.json({ redirect: '/blogs' });
+            res.json({ redirect: '/routes' });
          })
         .catch((err) => {
             console.log(err);

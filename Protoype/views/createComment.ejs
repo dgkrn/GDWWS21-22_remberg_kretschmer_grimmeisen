@@ -5,12 +5,12 @@
   <%- include("./partials/nav.ejs") %>
 
   <div class="create-blog content">
-    <form action="/routes" method="POST">
-      <label for="title">Route title:</label>
+    <form action="/comment/<%= id %>" method="POST">
+      <label for="score">Ranking:</label>
+      <input type="Number" id="score" name="score" required>
+      <label for="title">Überschrift:</label>
       <input type="text" id="title" name="title" required>
-      <label for="snippet">Link:</label>
-      <input type="text" id="snippet" name="snippet" required>
-      <label for="body">Description:</label>
+      <label for="body">Beschreibung:</label>
       <textarea id="body" name="body" required></textarea>
       <button>Submit</button>
     </form>

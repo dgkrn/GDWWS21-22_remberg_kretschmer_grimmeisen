@@ -1,0 +1,27 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="blogs content">
+    <h2>Alle Kommentare</h2>
+
+    <% if (comments.length > 0) { %>
+      <% comments.forEach(comment => { %>
+        <% if(comment.id == map_id) {%>
+        <a class="single">
+          <h3 class="score"><%= comment.score %> / 5</h3>
+          <h3 class="title"><%= comment.title %></h3>
+          <p class="body"><%= comment.body %></p>
+        </a>
+      <% }}) %>
+    <% } else { %>
+      <p>There are no routes to display...</p>
+    <% } %>
+    
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+</body>
+</html>

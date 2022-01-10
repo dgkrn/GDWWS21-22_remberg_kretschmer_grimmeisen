@@ -18,8 +18,7 @@
 
 <body>
   <%- include("./partials/nav.ejs") %>
-  <h2><%= blog.title %>
-  </h2>
+  <h2><%= blog.title %></h2>
   <a id="123" class="snippet"><%= blog.snippet %></a>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -58,10 +57,20 @@ src="https://tvapi.gpswandern.de/v/5/">
 <div class="clearleft"></div>
 </div>
 
+<div class="create-blog content">
+<form action="/comments/<%= blog.id %>" method="GET">
+  <button>Kommentare anzeigen</button>
+</form>
+
+<form action="/comment/<%= blog.id %>" method="GET">
+  <button>Kommentar schreiben</button>
+</form>
+</div>
+
 <script>
   const trashcan = document.querySelector('a.delete');
   trashcan.addEventListener('click', (e) => {
-    const endpoint = `/blogs/${trashcan.dataset.doc}`;
+    const endpoint = `/routes/${trashcan.dataset.doc}`;
     fetch(endpoint, {
       method: 'DELETE',
     })
@@ -71,5 +80,9 @@ src="https://tvapi.gpswandern.de/v/5/">
   });
   
 </script>
+
+
+</div>
+
 </body>
 </html>
