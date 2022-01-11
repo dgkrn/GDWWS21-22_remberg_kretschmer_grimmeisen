@@ -1,5 +1,6 @@
 const express = require('express');
 const Blog = require('../models/blog');
+const Anzahl = require('../models/anzahl');
 
 const router = express.Router();
 
@@ -16,23 +17,47 @@ router.get('/routes', (req, res) => {
 
 router.post('/routes', (req, res) => { 
     const blog = new Blog(req.body);
-
-    blog.save()
+    var count = 0;
+    Anzahl.findOne({id: 1})
+    .then((result) => {
+        count = result.anzahl;
+        Blog.find()
         .then((result) => {
-            res.redirect('/routes');
+                blog.enumId = count + 1;
+                blog.id= req.params.id;
+                blog.save()
+                    .then((result) => {
+                        count = count + 1;
+                        Anzahl.findOneAndUpdate({id: 1}, {anzahl: count})
+                        .then( (result) => {
+                            res.redirect('/routes');
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
         })
         .catch((err) => {
             console.log(err);
         });
+    
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 });
 
+//nur front end
 router.get('/route/create', (req, res) => {
     res.render('create', { title: 'Create a new Route'});
 });
 
 router.get('/routes/:id/map', (req, res) => {
     const id = req.params.id;
-    Blog.findById(id)
+    Blog.findOne({enumId: id})
         .then((result) => {
             res.redirect(result.snippet)
         })
@@ -44,7 +69,7 @@ router.get('/routes/:id/map', (req, res) => {
 
 router.get('/routes/:id', (req, res) => {
     const id = req.params.id;
-    Blog.findById(id)
+    Blog.findOne({enumId: id})
         .then((result) => {
             res.render('map', {blog: result , title: result.title});
         })
@@ -58,7 +83,7 @@ router.get('/routes/:id', (req, res) => {
 router.delete('/routes/:id', (req, res) => {
     const id = req.params.id;
 
-    Blog.findByIdAndDelete(id)
+    Blog.findOneAndDelete({enumId: id})
         .then((result) => {
             res.json({ redirect: '/routes' });
          })

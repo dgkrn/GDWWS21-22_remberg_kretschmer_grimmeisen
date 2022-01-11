@@ -19,6 +19,10 @@ const commentSchema = new Schema({
     id: {
         type: String,
         required: true
+    },
+    enumId: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true, collection: 'comments'});
 

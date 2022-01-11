@@ -13,6 +13,10 @@ const blogSchema = new Schema({
     body: {
         type: String,
         required: true
+    },
+    enumId: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true, collection: 'blogs'});
 
