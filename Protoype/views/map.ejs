@@ -19,7 +19,7 @@
 <body>
   <%- include("./partials/nav.ejs") %>
   <h2><%= blog.title %></h2>
-  <a id="123" class="snippet"><%= blog.snippet %></a>
+  <a id="1" class="snippet"><%= blog.snippet %></a>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
   crossorigin="">
@@ -32,7 +32,8 @@ src="https://tvapi.gpswandern.de/v/5/">
 </script>
 <script type="text/javascript" >
   var Tv = new TrackViewer;
-  Tv.url = document.getElementById("123").innerHTML;
+  Tv.url = document.getElementById("1").innerHTML;
+  // Front End Anzeige der Karte
   Tv.mapDiv = "karte";
   Tv.eleProfDiv = "hoehenprofil";
   Tv.eleProfWidth = 600;

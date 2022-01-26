@@ -7,31 +7,37 @@ const Comment = require('./models/commentary');
 const Anzahl = require('./models/anzahl');
 const { result } = require('lodash');
 
-// express app
+// express app kreieren
 const app = express();
 
-// connect to mongoDB
+// mit Mongo DB verbinden
 const dbURI = 'mongodb+srv://lucaremb:01111999@cluster0.vjkxa.mongodb.net/note-js?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology:true })
     .then((result) => app.listen(3000))
     .catch((err) => console.log(err));
-//register view engine
+
+// view engine registrieren / nur für front end
 app.set('view engine', 'ejs');
 
+// public Ordner für public freischalten
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-//routes
+// routes
+
+// default
 app.get('/', (req, res) => {
    res.redirect('/routes');
 });
 
+// front end
 app.get('/routes/:id/comment', (req, res) => {
     id= req.params.id;
     res.render('createComment', { title: 'Kommentar erstellen', id: id});
 });
 
+// Erstellen eines Kommentars zur jeweiligen ausgewählten Route (aus ranking: Number zwischen 0 und 5; title: String; body: String) 
 app.post('/routes/:id/comment', (req, res) => { 
     const comment = new Comment(req.body);
     var count = 0;
@@ -47,7 +53,8 @@ app.post('/routes/:id/comment', (req, res) => {
                         count = count + 1;
                         Anzahl.findOneAndUpdate({id: 2}, {anzahl: count})
                         .then( (result) => {
-                            res.redirect('/routes');
+                            res.write('Der Kommentar ist nun in RoutenID: ' + req.params.id + ' mit der KommentarID: ' + count + ' angelegt worden.');
+                            res.end();
                         })
                         .catch((err) => {
                             console.log(err);
@@ -66,6 +73,7 @@ app.post('/routes/:id/comment', (req, res) => {
     });
 });
 
+// Ausgabe des Kommentars in Form einer JSON Datei aus dem Verzeichnis der Map und der KommentarID
 app.get('/routes/:id/comment/:comment_id', (req, res) => {
     const id = req.params.id;
     const comment_id = req.params.comment_id;
@@ -78,6 +86,7 @@ app.get('/routes/:id/comment/:comment_id', (req, res) => {
         });
 });
 
+// Löschen des Kommentars, herausgesucht aus dem Verzeichnis der Map und der KommentarID
 app.delete('/routes/:id/comment/:comment_id', (req, res) => {
     const id = req.params.id;
     const comment_id = req.params.comment_id;
@@ -90,7 +99,7 @@ app.delete('/routes/:id/comment/:comment_id', (req, res) => {
         });
 });
 
-//blog routes
+// blog routes
 app.use(blogRoutes);
 
 // 404 pages (MUSS am Ende der Klasse stehen!!!)

@@ -4,6 +4,7 @@ const Anzahl = require('../models/anzahl');
 
 const router = express.Router();
 
+// Ausgabe einer Liste aller Routen
 router.get('/routes', (req, res) => {
     Blog.find().sort({ createdAt: -1 })
         .then((result) => {
@@ -14,7 +15,7 @@ router.get('/routes', (req, res) => {
         });
 });
 
-
+//  Erstellen einer neuen Route; Update der Anzahl Datenbank, dass eine Route mehr im System hinterlegt ist (aus title: String; snippet: String (Link zur .GPX Datei); body: String) 
 router.post('/routes', (req, res) => { 
     const blog = new Blog(req.body);
     var count = 0;
@@ -23,14 +24,14 @@ router.post('/routes', (req, res) => {
         count = result.anzahl;
         Blog.find()
         .then((result) => {
-                blog.enumId = count + 1;
-                blog.id= req.params.id;
+                count = count + 1;
+                blog.enumId = count;
                 blog.save()
                     .then((result) => {
-                        count = count + 1;
                         Anzahl.findOneAndUpdate({id: 1}, {anzahl: count})
                         .then( (result) => {
-                            res.redirect('/routes');
+                            res.write('Die Route ist nun in RoutenID: ' + count + ' angelegt worden.');
+                            res.end();
                         })
                         .catch((err) => {
                             console.log(err);
@@ -50,11 +51,12 @@ router.post('/routes', (req, res) => {
     });
 });
 
-//nur front end
+// nur front end; Aufrufen einer Seite zum Erstellen einer neuen Route 
 router.get('/route/create', (req, res) => {
     res.render('create', { title: 'Create a new Route'});
 });
 
+// Aufrufen der XML Datei der Route, welche mit der ID spezifiziert wurde
 router.get('/routes/:id/map', (req, res) => {
     const id = req.params.id;
     Blog.findOne({enumId: id})
@@ -67,6 +69,7 @@ router.get('/routes/:id/map', (req, res) => {
         });
 });
 
+// Zugriff auf Routen mit Front End Karte des Webservices, welcher mit der ID spezifiziert wurde
 router.get('/routes/:id', (req, res) => {
     const id = req.params.id;
     Blog.findOne({enumId: id})
@@ -79,7 +82,7 @@ router.get('/routes/:id', (req, res) => {
         });
 });
 
-
+// Löschen eines ausgewählten Eintrags, welcher mit der ID spezifiziert wurde
 router.delete('/routes/:id', (req, res) => {
     const id = req.params.id;
 
@@ -92,4 +95,5 @@ router.delete('/routes/:id', (req, res) => {
         });
 });
 
+// Export der Router "Informationen"
 module.exports = router;
